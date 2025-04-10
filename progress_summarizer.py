@@ -62,8 +62,11 @@ class ProgressSummarizer:
         Available links from the original text:
         {links_context}
 
-        Please provide a concise summary focusing only on these three aspects. Format the response in GitHub-flavored markdown with appropriate headers and bullet points. Include relevant links from the original text where appropriate to provide context and references. Use the exact link format [text](url) when including links."""
-        
+        Please provide a concise summary focusing only on these three aspects.
+        Format the response in GitHub-flavored markdown.
+        Include relevant links from the original text where appropriate to provide context and references. 
+        Use the exact link format [text](url) when including links."""
+
         response = ollama.generate(
             model='llama2',
             prompt=prompt

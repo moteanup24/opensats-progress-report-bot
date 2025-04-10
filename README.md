@@ -74,6 +74,24 @@ Replace:
 - `https://github.com/owner/repo/issues/123` with the full URL of the GitHub issue
 - `path/to/summary.md` with the path to your generated summary file
 
+### Combined Processing and Posting
+
+For a complete workflow that both summarizes and posts to GitHub, use the combined bot:
+
+```bash
+python progress_report_bot.py --token YOUR_GITHUB_TOKEN \
+                             path/to/your/report.md \
+                             https://github.com/owner/repo/issues/123
+```
+
+The bot will:
+1. Process the progress report and generate a summary
+2. Check if this report has already been posted to the specified issue
+3. Post the summary as a comment if it hasn't been posted before
+4. Track posted reports in `github_posts.json` to avoid duplicates
+
+The GitHub token is optional. If not provided, the bot will still generate the summary but won't post it to GitHub.
+
 ## Output
 
 The generated summary file includes:
