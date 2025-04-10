@@ -13,6 +13,7 @@ A Python tool that analyzes progress report markdown files and generates concise
 - Generates GitHub-flavored markdown summaries
 - Saves summaries to timestamped markdown files
 - Tracks processed files to avoid duplicate processing
+- Posts summaries as GitHub comments (optional)
 
 ## Requirements
 
@@ -21,6 +22,7 @@ A Python tool that analyzes progress report markdown files and generates concise
 - Required Python packages:
   - ollama
   - argparse
+  - requests (for GitHub integration)
 
 ## Installation
 
@@ -35,7 +37,14 @@ A Python tool that analyzes progress report markdown files and generates concise
    cd opensats-progress-report-bot
    ```
 
+3. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
 ## Usage
+
+### Generating Summaries
 
 Run the script by providing the path to a markdown file:
 
@@ -49,6 +58,25 @@ The script will:
 3. Save the summary to a new file (e.g., `summary_20240315_143022.md`)
 4. Display the summary in the console
 5. Track the processed file in `processed_files.json`
+
+### Posting to GitHub
+
+To post a summary as a GitHub comment:
+
+```bash
+python github_commenter.py --token YOUR_GITHUB_TOKEN \
+                          --owner repository-owner \
+                          --repo repository-name \
+                          --issue ISSUE_NUMBER \
+                          path/to/summary.md
+```
+
+Replace:
+- `YOUR_GITHUB_TOKEN` with your GitHub personal access token
+- `repository-owner` with the GitHub username or organization name
+- `repository-name` with the repository name
+- `ISSUE_NUMBER` with the issue number to comment on
+- `path/to/summary.md` with the path to your generated summary file
 
 ## Output
 
@@ -105,4 +133,5 @@ Generated summary:
 - The tool uses Ollama's Llama2 model for text analysis and summarization
 - Processed files are tracked in `processed_files.json` to avoid duplicate processing
 - Each summary is saved with a unique timestamp to prevent overwriting
-- The tool preserves relevant hyperlinks from the original text in the summary 
+- The tool preserves relevant hyperlinks from the original text in the summary
+- For GitHub integration, you'll need a personal access token with `repo` scope 
