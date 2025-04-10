@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 import requests
 from datetime import datetime
+import re
 
 class GitHubCommenter:
     def __init__(self, token):
@@ -17,8 +18,26 @@ class GitHubCommenter:
         with open(summary_file, 'r') as f:
             return f.read()
     
-    def post_comment(self, owner, repo, issue_number, summary_file):
+    def _parse_github_url(self, url):
+        """Extract owner, repo, and issue number from a GitHub issue URL."""
+        # Pattern for GitHub issue URLs
+        pattern = r'https://github.com/([^/]+)/([^/]+)/issues/(\d+)'
+        match = re.match(pattern, url)
+        
+        if not match:
+            raise ValueError("Invalid GitHub issue URL. Expected format: https://github.com/owner/repo/issues/number")
+        
+        return match.groups()
+    
+    def post_comment(self, issue_url, summary_file):
         """Post the summary as a comment to a GitHub issue."""
+        # Extract repository details from URL
+        try:
+            owner, repo, issue_number = self._parse_github_url(issue_url)
+        except ValueError as e:
+            print(f"Error: {str(e)}")
+            return False
+        
         # Read the summary content
         summary_content = self._read_summary(summary_file)
         
@@ -44,9 +63,7 @@ class GitHubCommenter:
 def main():
     parser = argparse.ArgumentParser(description='Post a progress report summary as a GitHub comment.')
     parser.add_argument('--token', required=True, help='GitHub access token')
-    parser.add_argument('--owner', required=True, help='Repository owner')
-    parser.add_argument('--repo', required=True, help='Repository name')
-    parser.add_argument('--issue', required=True, type=int, help='Issue number to comment on')
+    parser.add_argument('issue_url', help='GitHub issue URL (e.g., https://github.com/owner/repo/issues/123)')
     parser.add_argument('summary_file', help='Path to the summary markdown file')
     
     args = parser.parse_args()
@@ -58,7 +75,7 @@ def main():
     
     # Initialize the commenter and post the comment
     commenter = GitHubCommenter(args.token)
-    commenter.post_comment(args.owner, args.repo, args.issue, args.summary_file)
+    commenter.post_comment(args.issue_url, args.summary_file)
 
 if __name__ == "__main__":
     main() 

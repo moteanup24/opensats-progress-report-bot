@@ -65,17 +65,13 @@ To post a summary as a GitHub comment:
 
 ```bash
 python github_commenter.py --token YOUR_GITHUB_TOKEN \
-                          --owner repository-owner \
-                          --repo repository-name \
-                          --issue ISSUE_NUMBER \
+                          https://github.com/owner/repo/issues/123 \
                           path/to/summary.md
 ```
 
 Replace:
 - `YOUR_GITHUB_TOKEN` with your GitHub personal access token
-- `repository-owner` with the GitHub username or organization name
-- `repository-name` with the repository name
-- `ISSUE_NUMBER` with the issue number to comment on
+- `https://github.com/owner/repo/issues/123` with the full URL of the GitHub issue
 - `path/to/summary.md` with the path to your generated summary file
 
 ## Output
